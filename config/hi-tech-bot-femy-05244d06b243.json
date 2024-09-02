@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hi-tech-bot-femy",
+  "private_key_id": "05244d06b243db3c38729306d364b56aa5d3c2ed",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDC1i1wLWAtut27\nkueqntgPLfOGGfmXeW2EJrrgJbMnlsYFkJzl7YxAw7yt7EqactgG/cL/cnX8G/iE\nBksL8GERr6RVzLLL8qSvz2Yp4Jfm8KgALR3DijmfDza68ccWZJCoSx91U6fRJ+8U\ncVrN9VqkQrkmFxex0LRk89NlPpn+rLEQxlKp2ZoRHHTQpzueh/+3Dutjg2iemBZB\n8OJtnqUHGzCRk12wxEvOnVurWEiP5FEH51ZZA99yU6f/kgczJ+OjnqYL5yNoHgZB\n9gg4s36pQ6ZfjNC/hxfG97+0OgJlnlI4n8hWta4HxoHuiDW1BgH0fzs3iPrWKqNF\nirUvn4NPAgMBAAECggEAWB7YdDkBnA09Rh3+S4wGOm9VChzrZxgTcUa3FLPYYJpv\nu4qZe+DBo3Uj/CG36Dzy+c6CCFjzhe/8qXHTNXYl4QLot6maYGXBGIccNOqQqXHE\n+jdtk8gLoaYW4dyCZ91aE9POSZlpeE6wcjWGlUpYEZzf8ptVKyYywMoKnWr/6U/V\njdUv1pwd2SFNgNo9DrjdP1yFrapXY/Xjj07OgDaQ7UQcI2A879Z0yF89tYZ8BzLT\nWFjD0z9dF4qQT54Ub7f1xcVAPE1pyfSiAMOoTi/DDqRBx2hAjxu74Oul9t+R9zhb\nEYjL5xCDXTDl+aBcqTqg8Z8TmfNVGqdQb+eGXDr9CQKBgQDqkfTnIbcNi/TxxEbi\n5RgC6jkRuoLyv6MSVV71WoCARnd1lc0tNKtMeCXgHETP8bpUhu7g8FLp2aOBhiKo\nFaA3L6u4G+rcv2cUXeD21QaDVz+od7p/cSHpcR4OEp3uKWYr1wxcfLfDlCS0DqJM\nvxRYwAeSKg48pIhQgbVgAWqT4wKBgQDUovKSC2VMQtT5aawMQ53QY2r/L1hj2ilM\nHdAwiSD72/c59LKONZw5+3qiZDXkaAoGohUoJ1guEFxpBu9khg5td8iOzLC66g5f\n2Yxot1shNvRCwpaqD/VGjAYUK96pH/dJMlNimB3DpBcY+7swwtIpVi9TgYxnjP96\nUbDz5iOmpQKBgQC0H5JU7gHX6DIWeOcKEmumyV87auJlL500VdQOSgnE9teCtp6Q\naRJlLRnAh1Sb7X5srBTBLCovIo24x1zTf4/A8N1HCkEGc//eltxKDnjq4FOktRPE\nCwbEcLVojwkxOh8X6RG375lZGOg6T8Z3cn9YS1VE+wBltt5qG8BAUbYaiwKBgQCH\n6pxI0/XtGC8QOgaaVEI06MeE1BuYv+Nz3v6rd4vY0ZKmvg3ALu5sdZ2+3XVBSWtX\nMBV79CI+V4DqNV+iDrp8KHvPI3G4GFIV3HYOnV0nzvu1DLLHg6nRbUGZdS0/R8qG\nRB/evsMPwfxtoMLXeUBi4c8gfodjzVGkO0FztWCGbQKBgD5vuSW14jRdS3Kllaeh\nKF2yxe1dlqSvi8DmcmfpSyAyN0DH+R5AD78U8Ix0OuXql7xgolZUk44wGYp7wxzb\n/Hn6oo5yVosULRKdagrKpQu3PU8rRUlmkUbD+1zRpi7rqi921kmRTSJrah61FJ1y\nVVin7izOQw16XCDts83THRoi\n-----END PRIVATE KEY-----\n",
+  "client_email": "chatbot@hi-tech-bot-femy.iam.gserviceaccount.com",
+  "client_id": "115803394062434345649",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chatbot%40hi-tech-bot-femy.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
