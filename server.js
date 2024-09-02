@@ -116,7 +116,7 @@ app.post('/message', async (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3306;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
