@@ -1,14 +1,14 @@
 {
   "name": "chatbot",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node src/server.js",
     "build": "echo 'No build step required'"
-    
   },
   "keywords": [],
   "author": "",
+
   "license": "ISC",
   "description": "",
   "dependencies": {
