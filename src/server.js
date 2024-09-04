@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -8,12 +7,12 @@ const uuid = require('uuid');
 const app = express();
 app.use(bodyParser.json());
 
-// Set up MySQL connection using environment variables
+// Set up MySQL connection
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
+    host: 'localhost',
+    user: 'amar01', // Your MySQL username
+    password: 'Familylover@123', // Your MySQL password
+    database: 'college_info' // Your database name
 });
 
 db.connect((err) => {
@@ -24,11 +23,11 @@ db.connect((err) => {
     console.log('MySQL connected...');
 });
 
-// Set up Dialogflow using environment variables
+// Set up Dialogflow
 const sessionClient = new dialogflow.SessionsClient({
-    keyFilename: process.env.DIALOGFLOW_KEY_PATH
+    keyFilename: 'C:\\Code\\My Projects\\ChatBot\\config\\hi-tech-bot-femy-05244d06b243.json'
 });
-const projectId = process.env.PROJECT_ID;
+const projectId = 'hi-tech-bot-femy';
 
 async function detectIntentText(sessionId, text, languageCode) {
     const sessionPath = sessionClient.sessionPath(projectId, sessionId);
