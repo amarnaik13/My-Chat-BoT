@@ -3,6 +3,10 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 const dialogflow = require('dialogflow');
 const uuid = require('uuid');
+const session = require('express-session');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
@@ -10,24 +14,24 @@ app.use(bodyParser.json());
 // Set up MySQL connection
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'amar01', // Your MySQL username
-    password: 'Familylover@123', // Your MySQL password
-    database: 'college_info' // Your database name
+    user: 'amar01',
+    password: 'Familylover@123',
+    database: 'college_info'
 });
 
 db.connect((err) => {
     if (err) {
         console.error('MySQL connection error:', err);
-        process.exit(1); // Stop the server if MySQL connection fails
+        process.exit(1);
     }
     console.log('MySQL connected...');
 });
 
 // Set up Dialogflow
 const sessionClient = new dialogflow.SessionsClient({
-    keyFilename: 'C:\\Code\\My Projects\\ChatBot\\config\\hi-tech-bot-femy-05244d06b243.json'
+    keyFilename: process.env.DIALOGFLOW_KEY_PATH
 });
-const projectId = 'hi-tech-bot-femy';
+const projectId = process.env.PROJECT_ID;
 
 async function detectIntentText(sessionId, text, languageCode) {
     const sessionPath = sessionClient.sessionPath(projectId, sessionId);
@@ -42,6 +46,44 @@ async function detectIntentText(sessionId, text, languageCode) {
     };
     return sessionClient.detectIntent(request);
 }
+
+// Set up Passport and Google Strategy
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL
+}, (accessToken, refreshToken, profile, done) => {
+    // Here you can save user profile information to your database
+    return done(null, profile);
+}));
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+    done(null, obj);
+});
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Google OAuth Routes
+app.get('/auth/google', passport.authenticate('google', {
+    scope: ['profile']
+}));
+
+app.get('/auth/google/callback', passport.authenticate('google', {
+    failureRedirect: '/'
+}), (req, res) => {
+    res.redirect('/');
+});
 
 // Serve static files (HTML, CSS, JS)
 app.use(express.static('public'));

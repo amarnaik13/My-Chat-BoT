@@ -3,26 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
+    <title>Kist-Bot Chatbot</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-    <div class="chat-container">
-        <div class="chat-header">
-            <h2>Kist-Bot</h2>
-            <div class="user-dashboard">
-                <p>Login</p>
+    <!-- Stage 1: Intro -->
+    <div id="stage-intro" class="stage active">
+        <div class="intro-container">
+            <h1>Welcome to Hi-Tech-BoT</h1>
+            <p>Your virtual assistant for all things KIST-related. Whether it's admissions, course details, or fee structures, we've got you covered!</p>
+            <button class="primary-btn" onclick="goToStage('stage-guide')">Get Started</button>
+        </div>
+    </div>
+
+    <!-- Stage 2: Guide -->
+    <div id="stage-guide" class="stage hidden">
+        <div class="guide-container">
+            <h2>How can we assist you today?</h2>
+            <div class="functions">
+                <button class="function-btn" onclick="selectFunction('Admission Information')">Admission Information</button>
+                <button class="function-btn" onclick="selectFunction('Course Information')">Course Information</button>
+                <button class="function-btn" onclick="selectFunction('Fee Details')">Fee Details</button>
+                <button class="function-btn" onclick="selectFunction('Contact Information')">Contact Information</button>
             </div>
         </div>
-        <div class="chat-body" id="chat-body">
-            <div class="chat-message bot-message">
-                <p>Hello! Welcome to Kist, How can I assist you today?</p>
+    </div>
+
+    <!-- Stage 3: Conversation -->
+    <div id="stage-chat" class="stage hidden">
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>Kist-Bot</h2>
+                <div class="user-dashboard">
+                    <p>Login</p>
+                </div>
             </div>
-        </div>
-        <div class="chat-footer">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <button onclick="sendMessage()">Send</button>
+            <div class="chat-body" id="chat-body">
+                <div class="chat-message bot-message">
+                    <p>Hello! Welcome to Kist, How can I assist you today?</p>
+                </div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="user-input" placeholder="Type your message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
         </div>
     </div>
 

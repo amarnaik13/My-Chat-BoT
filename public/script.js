@@ -1,3 +1,24 @@
+// Function to navigate between stages
+function goToStage(stageId) {
+    const stages = document.querySelectorAll('.stage');
+    stages.forEach(stage => stage.classList.remove('active', 'hidden')); // Hide all stages
+    document.getElementById(stageId).classList.add('active'); // Show the selected stage
+}
+
+// Initially show the Intro stage when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    goToStage('stage-intro');
+});
+
+// Function to handle selected function in Guide stage
+function selectFunction(functionName) {
+    goToStage('stage-chat'); // Move to conversation stage
+    // Automatically send the selected function as the first message
+    document.getElementById('user-input').value = functionName;
+    sendMessage();
+}
+
+// Function to send messages (already provided in your existing script.js)
 function sendMessage() {
     const chatBody = document.getElementById('chat-body');
     const userInput = document.getElementById('user-input');
