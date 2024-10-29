@@ -1,12 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
 /* Global styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f1f2f5;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
+    /* margin: 0; */
 }
 
 /* Stage visibility control */
@@ -14,7 +20,7 @@ body {
     display: none;
 }
 .stage.active {
-    display: block;
+    display: flex;
 }
 
 /* Intro Stage Styling */
@@ -37,7 +43,7 @@ p {
 }
 
 button.primary-btn {
-    background-color: #4CAF50;
+    background-color: #0030BF;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -56,7 +62,7 @@ button.primary-btn:hover {
     background-color: #fff;
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
 .guide-container h2 {
@@ -84,4 +90,354 @@ button.function-btn {
 button.function-btn:hover {
     background-color: #2980b9;
 }
+
+/* Chat Stage Styling */
+.chat-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 639px;
+    width: 65%;
+    max-width: 300px;
+}
+
+/* Chat Header */
+.chat-header {
+    background-color: #4CAF50; /* Matches the primary button in Stage 1 */
+    color: white;
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h2 {
+    font-size: 20px;
+}
+
+.chat-header .login-btn {
+    background-color: #fff;
+    color: #4CAF50;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.chat-header .login-btn:hover {
+    background-color: #45a049;
+    color: white;
+}
+
+/* Chat Body */
+.chat-body {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #fafafa;
+    border-bottom: 2px solid #eee;
+}
+
+.chat-message.bot-message {
+    background-color: #3498db; /* Matches the function buttons in Stage 2 */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 75%;
+    margin-bottom: 15px;
+}
+
+.chat-message.user-message {
+    background-color: #f1f1f1;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 10px;
+    max-width: 75%;
+    margin-bottom: 15px;
+    margin-left: auto; /* Align user message to the right */
+}
+
+/* Chat Footer */
+.chat-footer {
+    display: flex;
+    padding: 10px;
+    background-color: #fff;
+    border-top: 2px solid #eee;
+}
+
+.chat-footer input {
+    flex-grow: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.chat-footer button {
+    background-color: #4CAF50; /* Matches primary button */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.chat-footer button:hover {
+    background-color: #45a049;
+}
+
+/* Scrollbar styling for the chat body */
+.chat-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-body::-webkit-scrollbar-thumb {
+    background-color: #3498db; /* Matches bot message color */
+    border-radius: 10px;
+}
+
+/* Back Arrow Styling */
+.back-arrow {
+    background: none;
+    border: none;
+    color: #17e053; /* Matches your theme */
+    font-size: 24px;
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+    padding: 10px;
+}
+
+.back-arrow:hover {
+    color: #2ad033; /* Hover effect */
+}
+
+/* Responsive design */
+/* Large screen (Desktop) */
+@media (min-width: 1024px) {
+    .chat-container {
+        max-width: 600px; /* Increase max width for desktop screens */
+    }
+    h1 {
+        font-size: 28px;
+    }
+    p {
+        font-size: 18px;
+    }
+}
+
+/* Medium screen (Tablet) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .chat-container {
+        width: 80%; /* Make chat box wider on tablets */
+    }
+    button.primary-btn {
+        padding: 12px 25px;
+        font-size: 18px;
+    }
+}
+
+/* Small screen (Mobile) */
+@media (max-width: 767px) {
+    body {
+        padding: 20px; /* Add padding to body for mobile devices */
+    }
+    .chat-container {
+        height: 80vh;
+        width: 100%; /* Full width on mobile */
+    }
+    h1 {
+        font-size: 22px;
+    }
+    p {
+        font-size: 14px;
+    }
+    .chat-footer input {
+        font-size: 12px; /* Smaller input font on mobile */
+    }
+    .chat-footer button {
+        font-size: 14px; /* Smaller button font on mobile */
+    }
+    .guide-container, .intro-container {
+        padding: 20px; /* Reduce padding on smaller screens */
+    }
+    .function-btn {
+        padding: 10px 15px; /* Reduce padding on function buttons */
+        font-size: 14px;
+    }
+}
+.profile-settings,
+.theme-settings {
+    margin-bottom: 20px;
+}
+
+.profile-settings input,
+.theme-settings button {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.theme-settings button {
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+}
+
+.theme-settings button:hover {
+    background-color: #2980b9;
+}
+/* Hidden Class */
+.hidden {
+    display: none;
+}
+/* Dashboard Container Styling */
+.dashboard-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #fff;
+    border-left: 1px solid #ccc;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 20px;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-container.active {
+    display: flex; /* Show dashboard when active class is added */
+}
+
+/* Heading Styling */
+.dashboard-container h2 {
+    margin-top: 0;
+}
+
+/* Input Field Styling */
+.dashboard-container input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+/* Button Styling */
+.dashboard-container button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+#profile-pic-preview {
+    max-width: 100%; /* Ensure image fits within the container */
+    margin-top: 10px;
+    border-radius: 5px; /* Optional: round edges for styling */
+}
+
+
+.dashboard-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Modal Styling */
+.modal {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.modal-content {
+width: 300px;
+background: #fff;
+padding: 20px;
+border-radius: 8px;
+text-align: center;
+position: relative;
+}
+
+/* Close Button */
+.close {
+position: absolute;
+top: 10px;
+right: 10px;
+font-size: 24px;
+cursor: pointer;
+}
+
+/* Form Input Styling */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+width: 100%;
+padding: 8px;
+margin: 8px 0;
+border: 1px solid #a0a2a3;
+border-radius: 4px;
+}
+
+/* Submit Button */
+button {
+width: 100%;
+padding: 10px;
+background-color: #007bff;
+color: #fff;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+font-size: 16px;
+}
+
+button:hover {
+background-color: #24bb5e;
+}
+
+/* Toggle Button for Switching Forms */
+#toggle-login-register {
+background-color: #007bff;
+color: white;
+margin-bottom: 10px;
+}
+
+#toggle-login-register:hover {
+    background-color: #24bb5e;
+    }
+
+/* Message Styling */
+.message {
+color: red;
+font-weight: bold;
+display: none;
+}
+
+/* Hide Elements */
+.hidden {
+display: none;
+}
+
+
+
+
 

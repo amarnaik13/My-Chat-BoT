@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body>    
 
     <!-- Stage 1: Intro -->
     <div id="stage-intro" class="stage active">
@@ -21,6 +21,8 @@
     <!-- Stage 2: Guide -->
     <div id="stage-guide" class="stage hidden">
         <div class="guide-container">
+            <!-- Add Back Arrow -->
+            <button class="back-arrow" onclick="goToStage('stage-intro')">←</button>
             <h2>How can we assist you today?</h2>
             <div class="functions">
                 <button class="function-btn" onclick="selectFunction('Admission Information')">Admission Information</button>
@@ -35,21 +37,73 @@
     <div id="stage-chat" class="stage hidden">
         <div class="chat-container">
             <div class="chat-header">
-                <h2>Kist-Bot</h2>
-                <div class="user-dashboard">
-                    <p>Login</p>
+                <!-- Add Back Arrow -->
+                <button class="back-arrow" onclick="goToStage('stage-guide')">←</button>
+                <h2>Hi-Tech-Bot</h2>
+                <div class="header-buttons">
+                    <button id="profile-btn" class="primary-btn hidden" onclick="toggleDashboard()">Profile</button>
                 </div>
             </div>
             <div class="chat-body" id="chat-body">
                 <div class="chat-message bot-message">
-                    <p>Hello! Welcome to Kist, How can I assist you today?</p>
-                </div>
+                    <p>Hello! Welcome to Kist. How can I assist you today?</p>
+               </div>
             </div>
             <div class="chat-footer">
-                <input type="text" id="user-input" placeholder="Type your message...">
-                <button onclick="sendMessage()">Send</button>
+                <input type="text" id="user-input" placeholder="Type your message..." class="message-input colorful-input">
+                <button class="send-btn colorful-btn" onclick="sendMessage()">Send</button>
             </div>
         </div>
+    </div>
+
+    <div id="login-modal" class="login hidden">
+        <div class="modal-content">
+            <span class="close" onclick="closeLoginModal()">&times;</span>
+            
+            <!-- Toggle between Login and Register -->
+            <button id="toggle-login-register" onclick="toggleLoginRegister()">Switch to Register</button>
+    
+            <!-- Login Section -->
+            <div id="login-section">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Enter your email" required>
+                <input type="password" id="login-password" placeholder="Enter your password" required>
+                <p id="login-error-message" style="color: red; display: none;"></p>
+                <button onclick="login()">Login</button>
+            </div>
+    
+            <!-- Register Section -->
+             <div id="register-section" class="hidden">
+                <h2>Register</h2>
+                <input type="text" id="register-username" placeholder="Enter your username" required>
+                <input type="email" id="register-email" placeholder="Enter your email" required>
+                <input type="password" id="register-password" placeholder="Enter your password" required>
+                <p id="registerMessage" class="message"></p>
+                <button onclick="register()">Register</button>
+              </div>
+        </div>
+    </div>
+    
+    
+
+    <!-- Dashboard Side Popup -->
+    <div id="dashboard-popup" class="dashboard-container hidden">
+        <h2>Dashboard</h2>
+        <div class="profile-settings">
+            <h3>Profile Settings</h3>
+            <label for="profile-name">Name:</label>
+            <input type="text" id="profile-name" placeholder="Enter your name">
+            <label for="profile-pic">Profile Picture:</label>
+            <input type="file" id="profile-pic" accept="image/*">
+            <img id="profile-pic-preview" src="" alt="Profile Picture Preview" style="display: none; max-width: 100%; margin-top: 10px;">
+        </div>
+        <div class="theme-settings">
+            <h3>Theme Settings</h3>
+            <button onclick="changeTheme('light')">Light Mode</button>
+            <button onclick="changeTheme('dark')">Dark Mode</button>
+        </div>
+        <button class="primary-btn" onclick="logout()">Logout</button>
+        <button class="primary-btn" onclick="toggleDashboard()">Close Dashboard</button>
     </div>
 
     <script src="script.js"></script>

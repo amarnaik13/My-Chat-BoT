@@ -11,6 +11,51 @@ require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
 
+// User Registration Route
+app.post('/register', (req, res) => {
+    const { email, password } = req.body;
+    
+    // Check if the user already exists
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+        if (results.length > 0) {
+            return res.json({ success: false, message: 'Email already registered!' });
+        } else {
+            // Hash the password (you should use bcrypt for hashing in production)
+            const hashedPassword = password; // Use bcrypt for real applications
+            
+            // Insert new user into database
+            db.query('INSERT INTO users (email, password) VALUES (?, ?)', [email, hashedPassword], (err) => {
+                if (err) {
+                    console.error('Error registering user:', err);
+                    return res.json({ success: false, message: 'Registration failed!' });
+                }
+                return res.json({ success: true });
+            });
+        }
+    });
+});
+
+// User Login Route
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+
+    db.query('SELECT * FROM users WHERE email = ?', [email], (err, results) => {
+        if (results.length === 0) {
+            return res.json({ success: false, message: 'Email not found!' });
+        }
+
+        const user = results[0];
+        
+        // Compare passwords (use bcrypt.compare in production)
+        if (password === user.password) { // bcrypt.compare(password, user.password) in real use
+            // Login successful
+            return res.json({ success: true });
+        } else {
+            return res.json({ success: false, message: 'Incorrect password!' });
+        }
+    });
+});
+
 // Set up MySQL connection
 const db = mysql.createConnection({
     host: 'localhost',
@@ -47,43 +92,64 @@ async function detectIntentText(sessionId, text, languageCode) {
     return sessionClient.detectIntent(request);
 }
 
-// Set up Passport and Google Strategy
+
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL
 }, (accessToken, refreshToken, profile, done) => {
-    // Here you can save user profile information to your database
-    return done(null, profile);
+    // Here you can verify if the user exists in your database
+    db.query('SELECT * FROM users WHERE google_id = ?', [profile.id], (err, results) => {
+        if (err) {
+            return done(err);
+        }
+        if (results.length === 0) {
+            // User not found, insert new user into the database
+            db.query('INSERT INTO users (google_id, email, name) VALUES (?, ?, ?)', 
+                [profile.id, profile.emails[0].value, profile.displayName], (err) => {
+                if (err) {
+                    return done(err);
+                }
+                return done(null, profile); // Pass profile if successful
+            });
+        } else {
+            // User exists, proceed
+            return done(null, results[0]);
+        }
+    });
 }));
 
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-
-passport.deserializeUser((obj, done) => {
-    done(null, obj);
-});
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+        secure: process.env.NODE_ENV === 'production', // Secure cookie in production
+        httpOnly: true // Prevent client-side JavaScript from accessing cookies
+    }
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-// Google OAuth Routes
-app.get('/auth/google', passport.authenticate('google', {
-    scope: ['profile']
-}));
 
 app.get('/auth/google/callback', passport.authenticate('google', {
-    failureRedirect: '/'
+    failureRedirect: '/login', // Redirect to login page on failure
+    failureMessage: 'Google login failed. Please try again.'
 }), (req, res) => {
-    res.redirect('/');
+    // Successful authentication, redirect to dashboard or home
+    res.redirect('/dashboard'); // Redirect to dashboard or preferred route
 });
+
+app.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.error('Error during logout:', err);
+        }
+        res.redirect('/'); // Redirect to home or login page after logout
+    });
+});
+
+
+
 
 // Serve static files (HTML, CSS, JS)
 app.use(express.static('public'));
@@ -157,7 +223,7 @@ app.post('/message', async (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
