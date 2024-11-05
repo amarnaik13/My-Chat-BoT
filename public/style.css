@@ -132,6 +132,8 @@ button.function-btn:hover {
 }
 
 .logo {
+    width: 40px;
+    height: 40px;
     font-size: 24px;
     margin-right: 10px;
 }
@@ -167,8 +169,8 @@ button.function-btn:hover {
   }
   
   .category-buttons button {
-    background-color: #616161;
-    border: 1px solid #e0e0e0;
+    background-color: #fffdfd;
+    border: 1px solid #4d4c4c;
     padding: 8px 12px;
     font-size: 12px;
     margin: 4px;
@@ -489,14 +491,14 @@ border-radius: 4px;
 
 /* Submit Button */
 button {
-width: 100%;
+width: px;
 padding: 10px;
-background-color: #007bff;
-color: #fff;
+background-color: #ffffff;
+color: #292727;
 border: none;
-border-radius: 4px;
+border-radius: 100px;
 cursor: pointer;
-font-size: 16px;
+font-size: 11px;
 }
 
 button:hover {
