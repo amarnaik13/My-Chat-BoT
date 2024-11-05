@@ -52,6 +52,7 @@
             <div class="chat-footer">
                 <input type="text" id="user-input" placeholder="Type your message..." class="message-input colorful-input">
                 <button class="send-btn colorful-btn" onclick="sendMessage()">Send</button>
+                <button class="voice-btn colorful-btn" onclick="startListening()">🎤 Speak</button> <!-- Voice button -->
             </div>
         </div>
     </div>
@@ -84,8 +85,6 @@
         </div>
     </div>
     
-    
-
     <!-- Dashboard Side Popup -->
     <div id="dashboard-popup" class="dashboard-container hidden">
         <h2>Dashboard</h2>
@@ -105,8 +104,7 @@
         <button class="primary-btn" onclick="logout()">Logout</button>
         <button class="primary-btn" onclick="toggleDashboard()">Close Dashboard</button>
     </div>
-
+    
     <script src="script.js"></script>
-
 </body>
 </html>

@@ -1,86 +1,6 @@
 // Function to navigate between stages
 function goToStage(stageId) {
     const stages = document.querySelectorAll('.stage');
-    stages.forEach(stage => stage.classList.remove('active', 'hidden')); // Hide all stages
-    document.getElementById(stageId).classList.add('active'); // Show the selected stage
-}
-
-// Initially show the Intro stage when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    goToStage('stage-intro');
-    
-});
-
-// Function to handle selected function in Guide stage
-function selectFunction(functionName) {
-    goToStage('stage-chat'); // Move to conversation stage
-    // Automatically send the selected function as the first message
-    document.getElementById('user-input').value = functionName;
-    sendMessage();
-}
-
-// Function to send messages (already provided in your existing script.js)
-function sendMessage() {
-    const chatBody = document.getElementById('chat-body');
-    const userInput = document.getElementById('user-input');
-    const userMessage = userInput.value.trim();
-
-    if (userMessage === '') return;
-
-    // Append user message to chat
-    const userMessageElement = document.createElement('div');
-    userMessageElement.classList.add('chat-message', 'user-message');
-    userMessageElement.innerText = userMessage;
-    chatBody.appendChild(userMessageElement);
-
-    // Scroll to the bottom of the chat
-    chatBody.scrollTop = chatBody.scrollHeight;
-
-    // Clear the input box
-    userInput.value = '';
-
-    // Send user message to server
-    fetch('/message', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: userMessage }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        const botMessageElement = document.createElement('div');
-        botMessageElement.classList.add('chat-message', 'bot-message');
-        botMessageElement.innerText = data.reply;
-        chatBody.appendChild(botMessageElement);
-
-        // Scroll to the bottom of the chat
-        chatBody.scrollTop = chatBody.scrollHeight;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
-
-function goToStage(stageId) {
-    const stages = document.querySelectorAll('.stage');
-    stages.forEach(stage => stage.classList.remove('active', 'hidden')); 
-    document.getElementById(stageId).classList.add('active'); 
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    goToStage('stage-intro');
-    // Check login status on page load
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const currentUser = localStorage.getItem('currentUser');
-    if (isLoggedIn === 'true' && currentUser) {
-        document.getElementById('profile-btn').classList.remove('hidden');
-    }
-});
-
-// Function to navigate between stages
-function goToStage(stageId) {
-    const stages = document.querySelectorAll('.stage');
     stages.forEach(stage => stage.classList.remove('active', 'hidden'));
     document.getElementById(stageId).classList.add('active');
 }
@@ -88,8 +8,6 @@ function goToStage(stageId) {
 // Show Intro stage when the page loads and check login status
 document.addEventListener('DOMContentLoaded', () => {
     goToStage('stage-intro');
-
-    // Check login status on page load
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const currentUser = localStorage.getItem('currentUser');
     if (isLoggedIn === 'true' && currentUser) {
@@ -99,6 +17,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Query count to track number of queries sent by user
 let queryCount = 0;
+
+// Initialize Speech Recognition
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+const recognition = new SpeechRecognition();
+recognition.lang = 'en-US';
+recognition.interimResults = false;
+recognition.maxAlternatives = 1;
+
+// Function to start listening to user voice
+function startListening() {
+    recognition.start();
+    console.log("Voice recognition activated. Listening...");
+}
+
+// Capture the recognized text and send it to the chatbot
+recognition.addEventListener('result', (event) => {
+    const transcript = event.results[0][0].transcript;
+    console.log(`You said: ${transcript}`);
+    document.getElementById('user-input').value = transcript;
+    sendMessage(); // Send message as usual
+});
+
+// Handle recognition errors
+recognition.addEventListener('error', (event) => {
+    console.error("Speech recognition error: ", event.error);
+});
+
+// Function to make the chatbot speak
+function speak(text) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.pitch = 1;
+    utterance.rate = 1;
+    speechSynthesis.speak(utterance);
+}
 
 // Function to handle selected function in Guide stage
 function selectFunction(functionName) {
@@ -115,6 +68,7 @@ function sendMessage() {
 
     if (userMessage === '') return;
 
+    // Display user message
     const userMessageElement = document.createElement('div');
     userMessageElement.classList.add('chat-message', 'user-message');
     userMessageElement.innerText = userMessage;
@@ -130,6 +84,7 @@ function sendMessage() {
         showLoginModal();
     }
 
+    // Send user message to server
     fetch('/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -137,12 +92,18 @@ function sendMessage() {
     })
     .then(response => response.json())
     .then(data => {
+        const botMessage = data.reply;
+
+        // Display bot response
         const botMessageElement = document.createElement('div');
         botMessageElement.classList.add('chat-message', 'bot-message');
-        botMessageElement.innerText = data.reply;
+        botMessageElement.innerText = botMessage;
         chatBody.appendChild(botMessageElement);
 
         chatBody.scrollTop = chatBody.scrollHeight;
+
+        // Make the bot respond with voice
+        speak(botMessage);
     })
     .catch(error => console.error('Error:', error));
 }
@@ -151,7 +112,6 @@ function sendMessage() {
 function showLoginModal() {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     if (isLoggedIn === 'true') return;
-
     document.getElementById('login-modal').style.display = 'flex';
     document.getElementById('login-section').style.display = 'block';
     document.getElementById('register-section').style.display = 'none';
@@ -199,11 +159,7 @@ function login() {
     if (storedPassword && storedPassword === password) {
         alert('Login successful!');
         closeLoginModal();
-
-        // Display the profile button after successful login
         document.getElementById('profile-btn').classList.remove('hidden');
-
-        // Store login status and current user in localStorage
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('currentUser', email);
     } else {
@@ -220,7 +176,6 @@ function closeLoginModal() {
 function logout() {
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('currentUser');
-
     document.getElementById('profile-btn').classList.add('hidden');
     toggleDashboard();
     alert('You have been logged out.');
