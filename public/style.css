@@ -425,6 +425,18 @@ margin-bottom: 10px;
     background-color: #24bb5e;
     }
 
+/* Message Styling */
+.message {
+color: red;
+font-weight: bold;
+display: none;
+}
+
+/* Hide Elements */
+.hidden {
+display: none;
+}
+
 
 
 
