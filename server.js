@@ -9,6 +9,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 // User Registration Route
