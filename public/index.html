@@ -39,15 +39,38 @@
             <div class="chat-header">
                 <!-- Add Back Arrow -->
                 <button class="back-arrow" onclick="goToStage('stage-guide')">←</button>
+                   <div class="logo-title">
+                    <span class="logo">🤖</span>
+                
                 <h2>Hi-Tech-Bot</h2>
                 <div class="header-buttons">
                     <button id="profile-btn" class="primary-btn hidden" onclick="toggleDashboard()">Profile</button>
+                    <button class="language-btn">English</button>
+                    <span class="notification">🔔</span>
+                   </div>    
                 </div>
+            </div>
+            <div class="category-buttons">
+                <button>Courses</button>
+                <button>Faculty</button>
+                <button>Labs</button>
+                <button>Schedule</button>
+                <button>Resources</button>
+                <button>Academic</button>
             </div>
             <div class="chat-body" id="chat-body">
                 <div class="chat-message bot-message">
                     <p>Hello! Welcome to Kist. How can I assist you today?</p>
+                    <span class="timestamp">8:40:56 PM</span>
                </div>
+            </div>
+            <div class="suggestions">
+                <button>What are the admission requirements?</button>
+                <button>Tell me about Computer Science courses</button>
+                <button>How can I access lab equipment?</button>
+                <button>Show me faculty office hours</button>
+                <button>Available research opportunities</button>
+                <button>View academic calendar</button>
             </div>
             <div class="chat-footer">
                 <input type="text" id="user-input" placeholder="Type your message..." class="message-input colorful-input">
