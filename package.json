@@ -7,15 +7,16 @@
     "build": "echo 'No build step required'"
   },
   "keywords": [],
-  "author": "",
+  "author": "amar,shiba,mahai,sri",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google-cloud/dialogflow": "^6.10.0",
     "axios": "^1.7.4",
     "body-parser": "^1.20.2",
     "cheerio": "^1.0.0",
     "csv-parser": "^3.0.0",
-    "dialogflow": "^1.2.0",
+    "dialogflow": "^4.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "express-session": "^1.18.0",

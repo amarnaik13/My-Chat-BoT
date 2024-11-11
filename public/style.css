@@ -203,31 +203,25 @@ button.function-btn:hover {
     border-bottom: 2px solid #eee;*/
 }
 
-.chat-message.bot-message {
-   /* background-color: #3498db; /* Matches the function buttons in Stage 2 
-    color: white;
+.bot-message,
+.user-message {
+    max-width: 80%;
     padding: 10px 15px;
-    border-radius: 10px;
-    max-width: 75%;
-    margin-bottom: 15px;*/
-
-    display: flex;
-    flex-direction: column;
-    background-color: #f1f5f9;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 8px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    position: relative;
+    font-size: 14px;
 }
 
-.chat-message.user-message {
-    /*background-color: #f1f1f1;
+.bot-message {
+    background-color: #f1f5f9;
     color: #333;
-    padding: 10px 15px;
-    border-radius: 10px;
-    max-width: 75%;
-    margin-bottom: 15px;
-    margin-left: auto; /* Align user message to the right */
-    align-self: flex-start;
+}
+
+.user-message {
+    background-color: #007bff;
+    color: white;
+    margin-left: auto;
 }
 .timestamp {
     font-size: 10px;

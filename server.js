@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
-const dialogflow = require('dialogflow');
+const { SessionsClient } = require('@google-cloud/dialogflow');
 const uuid = require('uuid');
 const session = require('express-session');
 const passport = require('passport');
@@ -9,7 +9,6 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
 app.use(bodyParser.json());
 
 // User Registration Route
@@ -74,13 +73,13 @@ db.connect((err) => {
 });
 
 // Set up Dialogflow
-const sessionClient = new dialogflow.SessionsClient({
+const sessionClient = new SessionsClient({
     keyFilename: process.env.DIALOGFLOW_KEY_PATH
 });
 const projectId = process.env.PROJECT_ID;
 
 async function detectIntentText(sessionId, text, languageCode) {
-    const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+    const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
     const request = {
         session: sessionPath,
         queryInput: {
@@ -93,51 +92,44 @@ async function detectIntentText(sessionId, text, languageCode) {
     return sessionClient.detectIntent(request);
 }
 
-
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL
 }, (accessToken, refreshToken, profile, done) => {
-    // Here you can verify if the user exists in your database
     db.query('SELECT * FROM users WHERE google_id = ?', [profile.id], (err, results) => {
         if (err) {
             return done(err);
         }
         if (results.length === 0) {
-            // User not found, insert new user into the database
             db.query('INSERT INTO users (google_id, email, name) VALUES (?, ?, ?)', 
                 [profile.id, profile.emails[0].value, profile.displayName], (err) => {
                 if (err) {
                     return done(err);
                 }
-                return done(null, profile); // Pass profile if successful
+                return done(null, profile);
             });
         } else {
-            // User exists, proceed
             return done(null, results[0]);
         }
     });
 }));
-
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: process.env.NODE_ENV === 'production', // Secure cookie in production
-        httpOnly: true // Prevent client-side JavaScript from accessing cookies
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
     }
 }));
 
-
 app.get('/auth/google/callback', passport.authenticate('google', {
-    failureRedirect: '/login', // Redirect to login page on failure
+    failureRedirect: '/login',
     failureMessage: 'Google login failed. Please try again.'
 }), (req, res) => {
-    // Successful authentication, redirect to dashboard or home
-    res.redirect('/dashboard'); // Redirect to dashboard or preferred route
+    res.redirect('/dashboard');
 });
 
 app.get('/logout', (req, res) => {
@@ -145,12 +137,9 @@ app.get('/logout', (req, res) => {
         if (err) {
             console.error('Error during logout:', err);
         }
-        res.redirect('/'); // Redirect to home or login page after logout
+        res.redirect('/');
     });
 });
-
-
-
 
 // Serve static files (HTML, CSS, JS)
 app.use(express.static('public'));
@@ -213,7 +202,6 @@ app.post('/message', async (req, res) => {
                 return res.send({ reply: responseText });
             });
         } else {
-            // Default response if no specific keywords are found
             return res.send({ reply: responseText });
         }
 

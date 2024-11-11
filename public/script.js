@@ -60,6 +60,15 @@ function selectFunction(functionName) {
     sendMessage();
 }
 
+let isVoiceInput = false; // Flag to track if the input is from voice
+
+// Function to start listening to user voice
+function startListening() {
+    isVoiceInput = true; // Set flag to true for voice input
+    recognition.start();
+    console.log("Voice recognition activated. Listening...");
+}
+
 // Function to send messages and increment query count
 function sendMessage() {
     const chatBody = document.getElementById('chat-body');
@@ -77,6 +86,47 @@ function sendMessage() {
     chatBody.scrollTop = chatBody.scrollHeight;
     userInput.value = '';
     queryCount++;
+
+    // Check if the user asked "Who built you and when?"
+    const creatorName = "Amar Kumar Naik, Shiba Baskey, Mahi Lal Badseth, and Sripati Randhari, Under the guidance of Asst. Prof. Subhashis Mishra";
+    const creationDate = "09.11.2024"; // Date of creation
+    const lowerCaseMessage = userMessage.toLowerCase();
+
+    if (lowerCaseMessage.includes("who built you") || lowerCaseMessage.includes("who are you built by") || lowerCaseMessage.includes("Who designed you") || lowerCaseMessage.includes("Who created you?") || lowerCaseMessage.includes("when were you built")){
+        const response = `I was built by ${creatorName} on ${creationDate}.`;
+
+        // Display bot response for the creator query
+        const botMessageElement = document.createElement('div');
+        botMessageElement.classList.add('chat-message', 'bot-message');
+        botMessageElement.innerText = response;
+        chatBody.appendChild(botMessageElement);
+
+        chatBody.scrollTop = chatBody.scrollHeight;
+
+        // Speak the response only if it was voice input
+        if (isVoiceInput) {
+            speak(response);
+        }
+
+        // Reset the isVoiceInput flag after responding
+        isVoiceInput = false;
+        return; // Exit function early to avoid sending the query to the server
+    }
+
+    // Function to handle click on suggestion and populate the input box
+function handleSuggestionClick(event) {
+    const suggestionText = event.target.innerText; // Get text of clicked suggestion
+    const userInput = document.getElementById('user-input'); // Reference to the input box
+    userInput.value = suggestionText; // Set input box value to suggestion text
+    }
+
+    // Attach event listeners to all suggestion buttons
+    document.querySelectorAll('.suggestion-btn').forEach(button => {
+    button.addEventListener('click', handleSuggestionClick);
+    });
+
+
+    
 
     // Show login modal if user is not logged in after five queries
     const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -102,11 +152,18 @@ function sendMessage() {
 
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        // Make the bot respond with voice
-        speak(botMessage);
+        // Speak the bot message only if it was voice input
+        if (isVoiceInput) {
+            speak(botMessage);
+        }
+
+        // Reset the isVoiceInput flag after responding
+        isVoiceInput = false;
     })
     .catch(error => console.error('Error:', error));
 }
+
+
 
 // Function to show the login modal if not logged in
 function showLoginModal() {
