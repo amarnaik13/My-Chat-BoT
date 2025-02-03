@@ -6,10 +6,60 @@ const uuid = require('uuid');
 const session = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const axios = require('axios'); // Add axios for making HTTP requests to Gemini API
 require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
+
+// Set up MySQL connection
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'amar01',
+    password: 'Familylover@123',
+    database: 'college_info'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('MySQL connection error:', err);
+        process.exit(1);
+    }
+    console.log('MySQL connected...');
+});
+
+// Set up Dialogflow
+const sessionClient = new SessionsClient({
+    keyFilename: process.env.DIALOGFLOW_KEY_PATH
+});
+const projectId = process.env.PROJECT_ID;
+
+async function detectIntentText(sessionId, text, languageCode) {
+    const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
+    const request = {
+        session: sessionPath,
+        queryInput: {
+            text: {
+                text: text,
+                languageCode: languageCode,
+            },
+        },
+    };
+    return sessionClient.detectIntent(request);
+}
+
+// Function to get market data from Gemini
+async function getGeminiMarketData(symbol) {
+    const url = `https://api.gemini.com/v1/pubticker/${symbol}`;
+
+    try {
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching market data from Gemini:', error);
+        throw error; // Re-throw to be handled in the route
+    }
+}
 
 // User Registration Route
 app.post('/register', (req, res) => {
@@ -56,42 +106,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// Set up MySQL connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'amar01',
-    password: 'Familylover@123',
-    database: 'college_info'
-});
-
-db.connect((err) => {
-    if (err) {
-        console.error('MySQL connection error:', err);
-        process.exit(1);
-    }
-    console.log('MySQL connected...');
-});
-
-// Set up Dialogflow
-const sessionClient = new SessionsClient({
-    keyFilename: process.env.DIALOGFLOW_KEY_PATH
-});
-const projectId = process.env.PROJECT_ID;
-
-async function detectIntentText(sessionId, text, languageCode) {
-    const sessionPath = sessionClient.projectAgentSessionPath(projectId, sessionId);
-    const request = {
-        session: sessionPath,
-        queryInput: {
-            text: {
-                text: text,
-                languageCode: languageCode,
-            },
-        },
-    };
-    return sessionClient.detectIntent(request);
-}
-
+// Passport setup for Google OAuth
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -153,6 +168,7 @@ app.post('/message', async (req, res) => {
         const dialogflowResponse = await detectIntentText(sessionId, userMessage, 'en-US');
         let responseText = dialogflowResponse[0].queryResult.fulfillmentText;
 
+        // If user asks about admission, course, fee, or contact, query MySQL for additional info
         if (/admission/i.test(userMessage)) {
             db.query('SELECT * FROM admissions LIMIT 1', (err, results) => {
                 if (err) {
@@ -163,7 +179,7 @@ app.post('/message', async (req, res) => {
                 responseText = `Admission Requirements: ${admission.requirements}\n` +
                                `Deadlines: ${admission.deadlines}\n` +
                                `Process: ${admission.process}`;
-                return res.send({ reply: responseText });
+                return res.json({ reply: responseText });
             });
         } else if (/course/i.test(userMessage)) {
             db.query('SELECT * FROM courses', (err, results) => {
@@ -175,7 +191,7 @@ app.post('/message', async (req, res) => {
                 results.forEach(course => {
                     responseText += `${course.name}: ${course.description} (Prerequisites: ${course.prerequisites})\n`;
                 });
-                return res.send({ reply: responseText });
+                return res.json({ reply: responseText });
             });
         } else if (/fee/i.test(userMessage)) {
             db.query('SELECT * FROM fees LIMIT 1', (err, results) => {
@@ -187,7 +203,7 @@ app.post('/message', async (req, res) => {
                 responseText = `Tuition: ${fee.tuition}\n` +
                                `Payment Deadline: ${fee.payment_deadline}\n` +
                                `Scholarships: ${fee.scholarships}`;
-                return res.send({ reply: responseText });
+                return res.json({ reply: responseText });
             });
         } else if (/contact/i.test(userMessage)) {
             db.query('SELECT * FROM contact LIMIT 1', (err, results) => {
@@ -199,10 +215,18 @@ app.post('/message', async (req, res) => {
                 responseText = `Email: ${contact.email}\n` +
                                `Phone: ${contact.phone}\n` +
                                `Address: ${contact.address}`;
-                return res.send({ reply: responseText });
+                return res.json({ reply: responseText });
             });
+        } else if (/crypto/i.test(userMessage)) {
+            // If user asks for cryptocurrency market data
+            const marketData = await getGeminiMarketData('BTCUSD'); // You can use dynamic symbol
+            responseText = `Crypto Market Data for BTCUSD:\n` +
+                           `Last Price: ${marketData.last}\n` +
+                           `High: ${marketData.high}\n` +
+                           `Low: ${marketData.low}`;
+            return res.json({ reply: responseText });
         } else {
-            return res.send({ reply: responseText });
+            return res.json({ reply: responseText });
         }
 
     } catch (error) {

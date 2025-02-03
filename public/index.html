@@ -1,135 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kist-Bot Chatbot</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hi-Tech-BoT</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>    
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span class="menu-title" id="menuTitle">Menu</span>
+        <button class="toggle-btn" id="toggleBtn">
+          <i data-lucide="chevron-left"></i>
+        </button>
+      </div>
 
-    <!-- Stage 1: Intro -->
-    <div id="stage-intro" class="stage active">
-        <div class="intro-container">
-            <h1>Welcome to Hi-Tech-BoT</h1>
-            <p>Your virtual assistant for all things KIST-related. Whether it's admissions, course details, or fee structures, we've got you covered!</p>
-            <button class="primary-btn" onclick="goToStage('stage-guide')">Get Started</button>
+      <div class="sidebar-content">
+        <div class="menu-item active">
+          <i data-lucide="zap"></i>
+          <span class="menu-text">HTC-2.0</span>
         </div>
+
+        <div class="menu-item">
+          <i data-lucide="home"></i>
+          <span class="menu-text">Home</span>
+        </div>
+
+        <div class="menu-item">
+          <i data-lucide="users"></i>
+          <span class="menu-text">About Us</span>
+        </div>
+
+        <div class="menu-item">
+          <i data-lucide="help-circle"></i>
+          <span class="menu-text">FAQ</span>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-text">Admission</div>
+          <div class="menu-text">Fees</div>
+          <div class="menu-text">Courses</div>
+        </div>
+
+        <div class="menu-item">
+          <i data-lucide="settings"></i>
+          <span class="menu-text">Profile Settings</span>
+        </div>
+
+        <div class="menu-item">
+          <i data-lucide="clock"></i>
+          <span class="menu-text">History</span>
+        </div>
+
+        <div class="menu-item">
+          <i data-lucide="bar-chart-2"></i>
+          <span class="menu-text">Usage</span>
+        </div>
+
+        <div class="menu-item">
+          <i data-lucide="calendar"></i>
+          <span class="menu-text">My Plan</span>
+        </div>
+      </div>
+
+      <div class="user-profile">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Profile">
+        <span class="menu-text">Amar01</span>
+        <i data-lucide="log-out"></i>
+      </div>
     </div>
 
-    <!-- Stage 2: Guide -->
-    <div id="stage-guide" class="stage hidden">
-        <div class="guide-container">
-            <!-- Add Back Arrow -->
-            <button class="back-arrow" onclick="goToStage('stage-intro')">←</button>
-            <h2>How can we assist you today?</h2>
-            <div class="functions">
-                <button class="function-btn" onclick="selectFunction('Admission Information')">Admission Information</button>
-                <button class="function-btn" onclick="selectFunction('Course Information')">Course Information</button>
-                <button class="function-btn" onclick="selectFunction('Fee Details')">Fee Details</button>
-                <button class="function-btn" onclick="selectFunction('Contact Information')">Contact Information</button>
-            </div>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <h1>Hi-Tech-BoT</h1>
+        <div class="header-controls">
+          <div class="search-box">
+            <i data-lucide="search"></i>
+            <input type="text" placeholder="Search">
+          </div>
+          <i data-lucide="bell"></i>
+          <i data-lucide="moon"></i>
+          <i data-lucide="user"></i>
         </div>
-    </div>
+      </header>
 
-    <!-- Stage 3: Conversation -->
-    <div id="stage-chat" class="stage hidden">
-        <div class="chat-container">
-            <div class="chat-header">
-                <!-- Add Back Arrow -->
-                <button class="back-arrow" onclick="goToStage('stage-guide')">←</button>
-                   <div class="logo-title">
-                   <span class="logo">🤖</span>
-                    
-                
-                <h2>Hi-Tech-Bot</h2>
-                <div class="header-buttons">
-                    <button id="profile-btn" class="primary-btn hidden" onclick="toggleDashboard()">Profile</button>
-                    <button class="language-btn">English</button>
-                    <span class="notification">🔔</span>
-                   </div>    
-                </div>
-            </div>
-            <div class="category-buttons">
-                <button>Courses</button>
-                <button>Faculty</button>
-                <button>Labs</button>
-                <button>Schedule</button>
-                <button>Resources</button>
-                <button>Academic</button>
-            </div>
-            <div class="chat-body" id="chat-body">
-                <div class="chat-message bot-message">
-                    <p>Hello! Welcome to Kist. How can I assist you today?</p>
-                    <span class="timestamp">8:40:56 PM</span>
-               </div>
-            </div>
-            <div class="suggestions">
-                <button class="suggestion-btn">What are the admission requirements?</button>
-                <button class="suggestion-btn">Tell me about Computer Science courses</button>
-                <button class="suggestion-btn">How can I access lab equipment?</button>
-                <button class="suggestion-btn">Show me faculty office hours</button>
-                <button class="suggestion-btn">Available research opportunities</button>
-                <button class="suggestion-btn">View academic calendar</button>
-            </div>
+      <!-- Chat Area -->
+      <div class="chat-area">
+        <div class="bot-selector">
+          <div class="bot active">
+            <i data-lucide="zap"></i>
+            <span>HTC-2.0</span>
+          </div>
+          <div class="bot">
+            <i data-lucide="zap"></i>
+            <span>HTC-3</span>
+          </div>
+        </div>
 
-            <div class="chat-footer">
-                <input type="text" id="user-input" placeholder="Type your message..." class="message-input colorful-input">
-                <button class="send-btn colorful-btn" onclick="sendMessage()">Send</button>
-                <button class="voice-btn colorful-btn" onclick="startListening()">🎤 Speak</button> <!-- Voice button -->
-            </div>
+        <div class="chat-content">
+          <!-- <h2>Welcome to Hi-Tech-BoT</h2>
+          <p class="subtitle">This is your personal ai assistant</p>
+          <p class="greeting">Hello Kist</p>
+          <div class="credits">
+            <p>Developed by Amar, Mahilal, Siba, Sripati Under the</p>
+            <p>Guidance of <span>Subhashish Mishra</span></p>
+          </div> -->
         </div>
-    </div>
 
-    <div id="login-modal" class="login hidden">
-        <div class="modal-content">
-            <span class="close" onclick="closeLoginModal()">&times;</span>
-            
-            <!-- Toggle between Login and Register -->
-            <button id="toggle-login-register" onclick="toggleLoginRegister()">Switch to Register</button>
-    
-            <!-- Login Section -->
-            <div id="login-section">
-                <h2>Login</h2>
-                <input type="email" id="login-email" placeholder="Enter your email" required>
-                <input type="password" id="login-password" placeholder="Enter your password" required>
-                <p id="login-error-message" style="color: red; display: none;"></p>
-                <button onclick="login()">Login</button>
-            </div>
-    
-            <!-- Register Section -->
-             <div id="register-section" class="hidden">
-                <h2>Register</h2>
-                <input type="text" id="register-username" placeholder="Enter your username" required>
-                <input type="email" id="register-email" placeholder="Enter your email" required>
-                <input type="password" id="register-password" placeholder="Enter your password" required>
-                <p id="registerMessage" class="message"></p>
-                <button onclick="register()">Register</button>
-              </div>
-        </div>
+        <form class="message-input" id="messageForm">
+          <input type="text" placeholder="Send a message" id="messageInput">
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </div>
-    
-    <!-- Dashboard Side Popup -->
-    <div id="dashboard-popup" class="dashboard-container hidden">
-        <h2>Dashboard</h2>
-        <div class="profile-settings">
-            <h3>Profile Settings</h3>
-            <label for="profile-name">Name:</label>
-            <input type="text" id="profile-name" placeholder="Enter your name">
-            <label for="profile-pic">Profile Picture:</label>
-            <input type="file" id="profile-pic" accept="image/*">
-            <img id="profile-pic-preview" src="" alt="Profile Picture Preview" style="display: none; max-width: 100%; margin-top: 10px;">
-        </div>
-        <div class="theme-settings">
-            <h3>Theme Settings</h3>
-            <button onclick="changeTheme('light')">Light Mode</button>
-            <button onclick="changeTheme('dark')">Dark Mode</button>
-        </div>
-        <button class="primary-btn" onclick="logout()">Logout</button>
-        <button class="primary-btn" onclick="toggleDashboard()">Close Dashboard</button>
-    </div>
-    
-    <script src="script.js"></script>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
